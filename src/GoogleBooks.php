@@ -125,7 +125,16 @@ class GoogleBooks
         return $this;
     }
 
-    public function listItems($endpoint, $params = [])
+    public function chunk(\Generator $generator, int $chunkInt)
+    {
+        $chunk = [];
+        foreach ($generator as $gen) {
+            $chunk[] = $generator->current();
+        }
+        return array_chunk($chunk, $chunkInt);
+    }
+
+    public function listItems($endpoint = 'volumes', $params = [])
     {
         $params['maxResults'] = $this->batchSize;
 
